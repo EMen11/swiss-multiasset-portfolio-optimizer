@@ -1,6 +1,12 @@
 # Swiss Multi-Asset Portfolio Optimizer
 
+![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![Status](https://img.shields.io/badge/status-active-success.svg)
+
 **Advanced portfolio optimization on Swiss Market Index (SMI) equities with crypto integration, Black-Litterman modeling, and walk-forward validation.**
+
+---
 
 Built with Python, yfinance, scipy, matplotlib — professional-grade quantitative finance modeling with live market data.
 
