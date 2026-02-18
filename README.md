@@ -3,6 +3,9 @@
 ![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![Status](https://img.shields.io/badge/status-active-success.svg)
+![Finance](https://img.shields.io/badge/finance-portfolio%20optimization-orange.svg)
+![Crypto](https://img.shields.io/badge/crypto-BTC%20%7C%20ETH-yellow.svg)
+![SMI](https://img.shields.io/badge/market-Swiss%20SMI-red.svg)
 
 **Advanced portfolio optimization on Swiss Market Index (SMI) equities with crypto integration, Black-Litterman modeling, and walk-forward validation.**
 
