@@ -266,9 +266,6 @@ MIT License — Free to use, modify, and distribute.
 
 ---
 
-##  Author
-
-**Your Name**  
 Mathematical Data Scientist | Python · Finance · Portfolio Optimization  
 [LinkedIn](https://linkedin.com/in/yourprofile) | [GitHub](https://github.com/yourusername)
 
