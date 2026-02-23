@@ -260,14 +260,10 @@ This project demonstrates:
 
 ---
 
-## 📄 License
+##  License
 
 MIT License — Free to use, modify, and distribute.
 
----
-
-Mathematical Data Scientist | Python · Finance · Portfolio Optimization  
-[LinkedIn](https://linkedin.com/in/yourprofile) | [GitHub](https://github.com/yourusername)
 
 ---
 
