@@ -6,12 +6,13 @@
 ![Finance](https://img.shields.io/badge/finance-portfolio%20optimization-orange.svg)
 ![Crypto](https://img.shields.io/badge/crypto-BTC%20%7C%20ETH-yellow.svg)
 ![SMI](https://img.shields.io/badge/market-Swiss%20SMI-red.svg)
+[![swiss-finance-data](https://img.shields.io/badge/data-swiss--finance--data-blue.svg)](https://pypi.org/project/swiss-finance-data/)
 
 **Advanced portfolio optimization on Swiss Market Index (SMI) equities with crypto integration, Black-Litterman modeling, and walk-forward validation.**
 
 ---
 
-Built with Python, yfinance, scipy, matplotlib — professional-grade quantitative finance modeling with live market data.
+Built with Python, yfinance, swiss-finance-data, scipy, matplotlib — professional-grade quantitative finance modeling with live market data.
 
 ---
 
@@ -54,10 +55,10 @@ Markowitz produces extreme allocations (0% or 50%+) that are unstable and imprac
 - Reduces concentration risk while maintaining performance
 - Lower volatility (17.6% vs 18.0%)
 
-**Analyst views applied:**
-- ABB: 18% expected return (70% confidence)
-- Novartis: 15% expected return (65% confidence)
-- Nestlé: 3% expected return (60% confidence)
+**Views sourced from fundamentals (via `swiss-finance-data` + `yfinance`):**
+- Macro calibration: SNB policy rate (risk-free rate) and Swiss CPI (inflation adjustment) fetched live from [swiss-finance-data](https://pypi.org/project/swiss-finance-data/)
+- Per-stock signals: trailing P/E, ROE, and earnings growth from yfinance — scored cross-sectionally and mapped to expected return views
+- Fallback to hardcoded views (ABB 18%, Novartis 15%, Nestlé 3%) if live data is unavailable
 
 ---
 
@@ -123,7 +124,8 @@ swiss-multiasset-portfolio-optimizer/
 ```
 
 **Core dependencies:**
-- `yfinance` — Live market data (Yahoo Finance API)
+- `yfinance` — Live market data (Yahoo Finance API) + per-stock fundamentals (P/E, ROE, earnings growth)
+- `swiss-finance-data` — Swiss macro data (SNB policy rate, Swiss CPI) for Black-Litterman view calibration
 - `scipy.optimize` — Constrained portfolio optimization (SLSQP)
 - `numpy/pandas` — Numerical computing
 - `matplotlib/seaborn` — Professional visualizations
@@ -141,7 +143,7 @@ swiss-multiasset-portfolio-optimizer/
 ### Setup
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/swiss-multiasset-portfolio-optimizer.git
+git clone https://github.com/EMen11/swiss-multiasset-portfolio-optimizer.git
 cd swiss-multiasset-portfolio-optimizer
 
 # Create virtual environment
@@ -169,12 +171,26 @@ python src/part4_walk_forward.py        # Walk-forward backtest
 
 ---
 
+##  Swiss Data Integration
+
+This project integrates [swiss-finance-data](https://pypi.org/project/swiss-finance-data/) — an open-source Python package providing clean access to official Swiss financial data (SNB, FSO).
+
+Used in this project for:
+- **SNB policy rate** — live risk-free rate for Sharpe ratio calculations and Black-Litterman macro calibration
+- **Swiss CPI** — inflation adjustment for expected return view generation
+
+> `swiss-finance-data` is maintained by the same author and complements `yfinance` specifically for Swiss market data. The package fetches data live from official Swiss government sources — no scraping, no static files.
+
+---
+
 ##  Data Sources
 
 - **SMI Equities:** Yahoo Finance via `yfinance` (tickers: `NESN.SW`, `NOVN.SW`, `UBSG.SW`, `ROG.SW`, `ABBN.SW`)
+- **Stock fundamentals:** Yahoo Finance via `yfinance` (P/E ratio, ROE, earnings growth — used for Black-Litterman view generation)
+- **Swiss macro data:** `swiss-finance-data` (SNB policy rate for live risk-free rate; Swiss CPI for inflation adjustment)
 - **Crypto:** Yahoo Finance (`BTC-USD`, `ETH-USD`)
 - **Period:** 2018-01-01 to present (live data)
-- **Risk-free rate:** 2% (Swiss National Bank proxy)
+- **Risk-free rate:** SNB policy rate via `swiss-finance-data` (falls back to 2% if unavailable)
 
 **Why SMI over S&P500/FAANG?**
 - Demonstrates **local market expertise** (relevant for Swiss asset managers like Pictet, UBS AM, Lombard Odier)
@@ -264,12 +280,10 @@ This project demonstrates:
 
 MIT License — Free to use, modify, and distribute.
 
-
 ---
 
 ##  Acknowledgments
 
-- **Data:** Yahoo Finance (yfinance library)
+- **Data:** Yahoo Finance (yfinance library), Swiss National Bank / Federal Statistical Office via [swiss-finance-data](https://pypi.org/project/swiss-finance-data/)
 - **Methodology:** Markowitz (1952), Black & Litterman (1992)
 - **Inspiration:** Real-world asset management practices at Swiss private banks
-

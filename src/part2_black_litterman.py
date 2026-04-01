@@ -13,7 +13,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from src.utils import (
     fetch_smi, compute_returns, covariance_matrix,
     annualized_return, portfolio_performance,
-    RISK_FREE_RATE, TRADING_DAYS, SMI_TICKERS
+    RISK_FREE_RATE, TRADING_DAYS, SMI_TICKERS,
+    get_fundamental_views, FALLBACK_VIEWS,
 )
 
 FIGURES_PATH = "reports/figures/"
@@ -328,16 +329,14 @@ def print_results(bl_result: dict, mkw_result: dict):
 
 if __name__ == "__main__":
 
-    # --- Analyst views ---
-    # Format: { "TICKER": (expected_annual_return, confidence_0_to_1) }
-    # These are informed views based on Part 1 results:
-    # ABB and Novartis showed highest Sharpe → we express bullish views
-    # Nestlé showed near-zero Sharpe → mild bearish view
-    VIEWS = {
-        "ABBN.SW": (0.18, 0.70),   # ABB:      18% expected, 70% confidence
-        "NOVN.SW": (0.15, 0.65),   # Novartis: 15% expected, 65% confidence
-        "NESN.SW": (0.03, 0.60),   # Nestlé:    3% expected, 60% confidence
-    }
+    # --- Derive views from fundamentals (P/E, ROE, earnings growth via yfinance
+    #     + SNB rate / Swiss CPI from swiss-finance-data for macro calibration).
+    #     Falls back to FALLBACK_VIEWS if data is unavailable. ---
+    print("Deriving fundamental views...")
+    VIEWS = get_fundamental_views()
+    if not VIEWS:
+        print("Warning: fundamental views empty — using hardcoded fallback")
+        VIEWS = dict(FALLBACK_VIEWS)
 
     print("Fetching SMI data...")
     prices  = fetch_smi()
